@@ -1,0 +1,78 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 12/07/2023 12:46:38 AM
+// Design Name: 
+// Module Name: testbench
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+module testbench3();
+    reg clk;
+    reg reset;
+    wire [7:0] prog_data_bus;
+    wire [7:0] prog_addr_bus;
+    wire [3:0] S_strobe;
+    wire [7:0] MUL;
+    reg [7:0] A;
+    reg [7:0] B;
+    reg [7:0] S;
+    
+    main3 main(
+        .main_clk(clk),
+        .reset(reset),
+        .in_port_0(A),
+        .in_port_1(B),
+        .out_port_0(MUL),
+        .out_strobe(S_strobe),
+        .inst_data_bus(prog_data_bus),
+        .inst_address_bus(prog_addr_bus)
+    );
+    
+    prog_mem3 pm(
+        .address_bus(prog_addr_bus),
+        .data_bus(prog_data_bus),
+        .reset(reset),
+        .program_clk(clk)
+    );
+    always #5 clk = !clk;
+
+    always @ (negedge(S_strobe[0])) begin
+      S <= MUL;
+    end
+    
+    initial begin
+        $dumpfile("test.vcd"); 
+      $dumpvars(0,testing_prog3); 
+        clk <= 0;
+        reset <= 1;
+        A <= 0;
+        B <= 0;
+        S <= 0;
+        #50;
+        reset <= 0;
+        #50;
+        reset <= 1;
+        #300;
+        A <= 9;
+        B <= 2;
+        #300;
+        A <= 2;
+        B <= 10;
+        #300;
+        $finish;
+    end
+    
+endmodule

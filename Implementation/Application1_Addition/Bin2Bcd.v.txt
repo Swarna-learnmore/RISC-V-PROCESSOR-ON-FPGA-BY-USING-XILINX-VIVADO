@@ -1,0 +1,29 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 12/07/2023 11:47:46 AM
+// Design Name: 
+// Module Name: bin_to_bcd
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+module bin_to_bcd(
+        input [7:0] bin,
+        output [11:0] bcd
+    );    
+    assign bcd[11:8] = bin / 8'd100;
+    assign bcd[7:4]  = (bin % 8'd100) / 8'd10;
+    assign bcd[3:0]  = (bin % 8'd100) % 8'd10;     
+endmodule
